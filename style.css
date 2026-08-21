@@ -1260,4 +1260,4 @@ section[id] { scroll-margin-top: 88px; }
     .results-header { flex-direction: column; align-items: flex-start; }
     .footer-content { grid-template-columns: 1fr; gap: var(--space-lg); }
     .search-btn { padding: 0.85rem 1.1rem; }
-}
+}s
