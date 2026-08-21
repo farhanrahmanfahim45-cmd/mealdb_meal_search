@@ -1,116 +1,360 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MealFinder - Discover Delicious Meals</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MealFinder — Find something worth cooking</title>
+<meta name="description" content="Search thousands of meals from TheMealDB, browse ingredients and photos, and follow clear step-by-step cooking instructions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500;1,9..144,600&family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header Section -->
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="logo">
-                    <span class="logo-icon">🍽️</span>
-                    <span class="logo-text">MealFinder</span>
-                </div>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#search">Search</a></li>
-                    <li><a href="#about">About</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Hero Section -->
-        <section class="hero" id="home">
-            <div class="hero-content">
-                <h1 class="hero-title">Discover Your Next Favorite Meal</h1>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<!-- ============ HEADER ============ -->
+<header class="header">
+    <nav class="navbar" aria-label="Primary">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <span class="logo-icon" aria-hidden="true"><i data-lucide="chef-hat"></i></span>
+                <span class="logo-text">MealFinder</span>
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="nav-link active" data-nav="home">Home</a></li>
+                <li><a href="#search" class="nav-link" data-nav="search">Search</a></li>
+                <li><a href="#about" class="nav-link" data-nav="about">About</a></li>
+            </ul>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+                <i data-lucide="menu" class="icon-open" aria-hidden="true"></i>
+                <i data-lucide="x" class="icon-close" aria-hidden="true"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- ============ INGREDIENT MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+        <span>GARLIC</span><span class="dot">•</span>
+        <span>SAFFRON</span><span class="dot">•</span>
+        <span>CHILI</span><span class="dot">•</span>
+        <span>BASIL</span><span class="dot">•</span>
+        <span>GINGER</span><span class="dot">•</span>
+        <span>CUMIN</span><span class="dot">•</span>
+        <span>LIME</span><span class="dot">•</span>
+        <span>PAPRIKA</span><span class="dot">•</span>
+        <span>THYME</span><span class="dot">•</span>
+        <span>CORIANDER</span><span class="dot">•</span>
+        <span>GARLIC</span><span class="dot">•</span>
+        <span>SAFFRON</span><span class="dot">•</span>
+        <span>CHILI</span><span class="dot">•</span>
+        <span>BASIL</span><span class="dot">•</span>
+        <span>GINGER</span><span class="dot">•</span>
+        <span>CUMIN</span><span class="dot">•</span>
+        <span>LIME</span><span class="dot">•</span>
+        <span>PAPRIKA</span><span class="dot">•</span>
+        <span>THYME</span><span class="dot">•</span>
+        <span>CORIANDER</span><span class="dot">•</span>
+    </div>
+</div>
+
+<main class="main-content" id="main-content">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="home">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="hero-container">
+            <div class="hero-copy">
+                <p class="eyebrow"><i data-lucide="flame" aria-hidden="true"></i> Tonight's craving, solved</p>
+                <h1 class="hero-title">
+                    Meals worth <em>cooking</em>,<br>found in seconds.
+                </h1>
                 <p class="hero-subtitle">
-                    Search through thousands of delicious recipes from around the world. 
-                    Find cooking instructions and meal ideas in seconds.
+                    Search thousands of dishes from kitchens around the world. Pull up real ingredients,
+                    a photo, and clear step-by-step instructions before you decide what's for dinner.
                 </p>
-            </div>
-        </section>
-
-        <!-- Search Section -->
-        <section class="search-section" id="search">
-            <div class="search-container">
-                <div class="search-box">
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        class="search-input" 
-                        placeholder="Search for a meal or ingredient..."
-                        aria-label="Search for meals"
-                    >
-                    <button id="searchBtn" class="search-btn" aria-label="Search">
-                        <span class="search-icon">🔍</span>
-                        Search
-                    </button>
+                <div class="hero-actions">
+                    <a href="#search" class="btn btn-primary">
+                        <i data-lucide="search" aria-hidden="true"></i> Start searching
+                    </a>
+                    <a href="#about" class="btn btn-ghost">How it works</a>
                 </div>
             </div>
-        </section>
 
-        <!-- Results Section -->
-        <section class="results-section" id="results">
-            <div class="results-container">
-                <h2 class="results-title">Search Results</h2>
-                
-                <!-- Initial State Message -->
-                <div id="initialState" class="initial-state">
-                    <p>🍳 Search for a meal to get started</p>
+            <div class="hero-visual" aria-hidden="true">
+                <div class="collage" id="heroCollage">
+                    <figure class="collage-card collage-card--a">
+                        <div class="collage-media"><div class="collage-skeleton"></div><img alt="" loading="eager"></div>
+                        <figcaption></figcaption>
+                    </figure>
+                    <figure class="collage-card collage-card--b">
+                        <div class="collage-media"><div class="collage-skeleton"></div><img alt="" loading="eager"></div>
+                        <figcaption></figcaption>
+                    </figure>
+                    <figure class="collage-card collage-card--c">
+                        <div class="collage-media"><div class="collage-skeleton"></div><img alt="" loading="eager"></div>
+                        <figcaption></figcaption>
+                    </figure>
+                    <span class="collage-badge"><i data-lucide="sparkles" aria-hidden="true"></i> Fresh results, every search</span>
                 </div>
-
-                <!-- Loading State -->
-                <div id="loadingState" class="loading-state hidden">
-                    <div class="spinner"></div>
-                    <p>Finding delicious meals...</p>
-                </div>
-
-                <!-- No Results State -->
-                <div id="noResultsState" class="no-results-state hidden">
-                    <p>😔 No meals found</p>
-                    <p class="no-results-subtitle">Try searching for another meal or ingredient</p>
-                </div>
-
-                <!-- Error State -->
-                <div id="errorState" class="error-state hidden">
-                    <p>⚠️ Something went wrong</p>
-                    <p class="error-subtitle">Please check your connection and try again</p>
-                </div>
-
-                <!-- Meals Grid -->
-                <div id="mealsGrid" class="meals-grid hidden">
-                    <!-- Meal cards will be inserted here by JavaScript -->
-                </div>
-
-                <!-- Show All Button -->
-                <div id="showAllContainer" class="show-all-container hidden">
-                    <button id="showAllBtn" class="show-all-btn">SHOW ALL</button>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>MealFinder</h3>
-                <p>Discover delicious meals and cooking inspiration.</p>
-            </div>
-            <div class="footer-section">
-                <p><strong>Data provided by</strong> TheMealDB</p>
-                <p>&copy; 2026 MealFinder. All rights reserved.</p>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <script src="script.js"></script>
+    <!-- ============ SEARCH ============ -->
+    <section class="search-section" id="search">
+        <div class="search-container">
+            <p class="eyebrow eyebrow-center"><i data-lucide="compass" aria-hidden="true"></i> Search by name or ingredient</p>
+            <div class="search-box">
+                <span class="search-input-icon" aria-hidden="true"><i data-lucide="search"></i></span>
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Search for chicken, pasta, curry…"
+                    aria-label="Search for meals"
+                    autocomplete="off"
+                >
+                <button id="searchBtn" class="search-btn" aria-label="Search">
+                    Search
+                </button>
+            </div>
+
+            <div class="chips-row">
+                <span class="chips-label">Popular:</span>
+                <div class="chips" id="chipsRow">
+                    <button type="button" class="chip" data-term="Chicken">Chicken</button>
+                    <button type="button" class="chip" data-term="Pasta">Pasta</button>
+                    <button type="button" class="chip" data-term="Beef">Beef</button>
+                    <button type="button" class="chip" data-term="Rice">Rice</button>
+                    <button type="button" class="chip" data-term="Soup">Soup</button>
+                    <button type="button" class="chip" data-term="Dessert">Dessert</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ WHY MEALFINDER ============ -->
+    <section class="why-section reveal">
+        <div class="section-container">
+            <p class="eyebrow eyebrow-center">Why MealFinder</p>
+            <h2 class="section-title">Everything you need before you cook</h2>
+            <div class="feature-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><i data-lucide="compass" aria-hidden="true"></i></div>
+                    <h3>Explore</h3>
+                    <p>Discover meals from cuisines around the world, one search at a time.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><i data-lucide="search" aria-hidden="true"></i></div>
+                    <h3>Search</h3>
+                    <p>Find recipes by meal name or by an ingredient you already have.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><i data-lucide="chef-hat" aria-hidden="true"></i></div>
+                    <h3>Cook</h3>
+                    <p>Every result comes with full, step-by-step cooking instructions.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><i data-lucide="sparkles" aria-hidden="true"></i></div>
+                    <h3>Discover</h3>
+                    <p>Not sure what to make? Browse results and get inspired by a photo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="how-section reveal">
+        <div class="section-container">
+            <p class="eyebrow eyebrow-center eyebrow-light">How it works</p>
+            <h2 class="section-title section-title-light">From craving to kitchen in three steps</h2>
+            <div class="steps-grid">
+                <div class="step">
+                    <span class="step-number">01</span>
+                    <h3>Search</h3>
+                    <p>Tell us what you're craving — a dish, or just an ingredient.</p>
+                </div>
+                <div class="step">
+                    <span class="step-number">02</span>
+                    <h3>Explore</h3>
+                    <p>Browse matching meals with photos and quick details.</p>
+                </div>
+                <div class="step">
+                    <span class="step-number">03</span>
+                    <h3>Cook</h3>
+                    <p>Open a card and follow the full cooking instructions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ RESULTS ============ -->
+    <section class="results-section" id="results">
+        <div class="results-container">
+            <div class="results-header">
+                <div>
+                    <h2 class="results-title" id="resultsTitle">Search results</h2>
+                    <p class="results-subtitle" id="resultsSubtitle">Your matches will appear here.</p>
+                </div>
+                <p class="results-count hidden" id="resultsCount"></p>
+            </div>
+
+            <!-- Initial State -->
+            <div id="initialState" class="state-card initial-state">
+                <div class="state-icon"><i data-lucide="utensils-crossed" aria-hidden="true"></i></div>
+                <p>What are you craving?</p>
+                <p class="state-subtitle">Search for a meal or ingredient above and discover something delicious.</p>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state hidden" aria-live="polite">
+                <div class="skeleton-grid">
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                    <div class="skeleton-card"></div>
+                </div>
+                <p><i data-lucide="loader" class="spin" aria-hidden="true"></i> Finding delicious meals&hellip;</p>
+            </div>
+
+            <!-- No Results State -->
+            <div id="noResultsState" class="state-card no-results-state hidden">
+                <div class="state-icon"><i data-lucide="search-x" aria-hidden="true"></i></div>
+                <p>Nothing delicious came up</p>
+                <p class="state-subtitle" id="noResultsText">We couldn't find a meal matching your search. Try another meal name or ingredient.</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="state-card error-state hidden">
+                <div class="state-icon"><i data-lucide="alert-circle" aria-hidden="true"></i></div>
+                <p>Something went wrong</p>
+                <p class="state-subtitle">Please check your connection and try again.</p>
+                <button id="retryBtn" class="btn btn-primary btn-sm">
+                    <i data-lucide="refresh-cw" aria-hidden="true"></i> Try again
+                </button>
+            </div>
+
+            <!-- Meals Grid -->
+            <div id="mealsGrid" class="meals-grid hidden"></div>
+
+            <!-- Show All Button -->
+            <div id="showAllContainer" class="show-all-container hidden">
+                <button id="showAllBtn" class="show-all-btn">
+                    Show all meals <i data-lucide="chevron-down" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="about-section" id="about">
+        <div class="section-container about-grid">
+            <div class="about-flow reveal" aria-hidden="true">
+                <div class="flow-step">
+                    <span class="flow-icon"><i data-lucide="keyboard" aria-hidden="true"></i></span>
+                    <div>
+                        <p class="flow-title">You search</p>
+                        <p class="flow-text">Enter a meal name or ingredient.</p>
+                    </div>
+                </div>
+                <div class="flow-line"></div>
+                <div class="flow-step">
+                    <span class="flow-icon"><i data-lucide="send" aria-hidden="true"></i></span>
+                    <div>
+                        <p class="flow-title">We ask TheMealDB</p>
+                        <p class="flow-text">Your search is sent to their public API.</p>
+                    </div>
+                </div>
+                <div class="flow-line"></div>
+                <div class="flow-step">
+                    <span class="flow-icon"><i data-lucide="database" aria-hidden="true"></i></span>
+                    <div>
+                        <p class="flow-title">Matches come back</p>
+                        <p class="flow-text">The API returns every meal that matches.</p>
+                    </div>
+                </div>
+                <div class="flow-line"></div>
+                <div class="flow-step">
+                    <span class="flow-icon"><i data-lucide="layout-grid" aria-hidden="true"></i></span>
+                    <div>
+                        <p class="flow-title">You get results</p>
+                        <p class="flow-text">MealFinder displays them as cards.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-copy reveal">
+                <p class="eyebrow">About</p>
+                <h2 class="section-title">A simple way to find what to cook</h2>
+                <p class="about-text">
+                    MealFinder is a web-based meal discovery tool. Type in a dish or an ingredient,
+                    and it searches TheMealDB's open recipe database for matching meals — no account,
+                    no clutter, just recipes.
+                </p>
+                <p class="about-text">
+                    Every result shows a meal ID, its name, a photo, and full cooking instructions,
+                    so you can decide what to make and start cooking right away.
+                </p>
+                <ul class="about-checklist">
+                    <li><i data-lucide="check" aria-hidden="true"></i> Search meals instantly</li>
+                    <li><i data-lucide="check" aria-hidden="true"></i> View recipe information at a glance</li>
+                    <li><i data-lucide="check" aria-hidden="true"></i> Read full cooking instructions</li>
+                    <li><i data-lucide="check" aria-hidden="true"></i> Explore meals from different cuisines</li>
+                </ul>
+                <a href="https://www.themealdb.com" target="_blank" rel="noopener noreferrer" class="data-source-link">
+                    Meal data provided by TheMealDB <i data-lucide="external-link" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section footer-brand">
+            <a href="#home" class="logo logo-footer">
+                <span class="logo-icon" aria-hidden="true"><i data-lucide="chef-hat"></i></span>
+                <span class="logo-text">MealFinder</span>
+            </a>
+            <p>A simple place to find something worth cooking tonight.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Explore</h3>
+            <ul class="footer-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#search">Search</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Discover</h3>
+            <ul class="footer-links">
+                <li><a href="#search">Search meals</a></li>
+                <li><a href="#results">Browse recipes</a></li>
+                <li><a href="#about">Cooking inspiration</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Data</h3>
+            <p>Powered by</p>
+            <a href="https://www.themealdb.com" target="_blank" rel="noopener noreferrer" class="footer-external">
+                TheMealDB API <i data-lucide="external-link" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 MealFinder. Built for meal discovery.</p>
+    </div>
+</footer>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
