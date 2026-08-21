@@ -12,6 +12,7 @@ let lastSearchTerm = '';
 const MEALS_PER_PAGE = 5;
 
 // DOM Elements — core search (unchanged IDs, preserved behavior)
+const searchForm = document.getElementById('searchForm');
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const mealsGrid = document.getElementById('mealsGrid');
@@ -46,13 +47,23 @@ function renderIcons() {
 // Event Listeners — core search
 // ========================================
 
-searchBtn.addEventListener('click', () => handleSearch());
-
-searchInput.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
+// Submitting the search form covers both the button click and pressing
+// Enter in the input — including mobile "Go/Search" keyboard buttons and
+// IME input, which a plain keypress listener can miss.
+if (searchForm) {
+    searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();
         handleSearch();
-    }
-});
+    });
+} else {
+    // Fallback in case the form wrapper is ever removed
+    searchBtn.addEventListener('click', () => handleSearch());
+    searchInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && !event.isComposing) {
+            handleSearch();
+        }
+    });
+}
 
 showAllBtn.addEventListener('click', showAllMeals);
 
