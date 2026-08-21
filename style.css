@@ -410,6 +410,7 @@ section[id] { scroll-margin-top: 88px; }
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
     animation: fade-up 0.8s var(--ease) 0.15s both;
 }
 
@@ -1260,4 +1261,4 @@ section[id] { scroll-margin-top: 88px; }
     .results-header { flex-direction: column; align-items: flex-start; }
     .footer-content { grid-template-columns: 1fr; gap: var(--space-lg); }
     .search-btn { padding: 0.85rem 1.1rem; }
-}s
+}
