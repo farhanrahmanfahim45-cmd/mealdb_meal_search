@@ -3,9 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>MealFinder - Discover Delicious Meals</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <!-- Header Section -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <span class="logo-icon">🍽️</span>
+                    <span class="logo-text">MealFinder</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#search">Search</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1 class="hero-title">Discover Your Next Favorite Meal</h1>
+                <p class="hero-subtitle">
+                    Search through thousands of delicious recipes from around the world. 
+                    Find cooking instructions and meal ideas in seconds.
+                </p>
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <section class="search-section" id="search">
+            <div class="search-container">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="Search for a meal or ingredient..."
+                        aria-label="Search for meals"
+                    >
+                    <button id="searchBtn" class="search-btn" aria-label="Search">
+                        <span class="search-icon">🔍</span>
+                        Search
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="results">
+            <div class="results-container">
+                <h2 class="results-title">Search Results</h2>
+                
+                <!-- Initial State Message -->
+                <div id="initialState" class="initial-state">
+                    <p>🍳 Search for a meal to get started</p>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="loading-state hidden">
+                    <div class="spinner"></div>
+                    <p>Finding delicious meals...</p>
+                </div>
+
+                <!-- No Results State -->
+                <div id="noResultsState" class="no-results-state hidden">
+                    <p>😔 No meals found</p>
+                    <p class="no-results-subtitle">Try searching for another meal or ingredient</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" class="error-state hidden">
+                    <p>⚠️ Something went wrong</p>
+                    <p class="error-subtitle">Please check your connection and try again</p>
+                </div>
+
+                <!-- Meals Grid -->
+                <div id="mealsGrid" class="meals-grid hidden">
+                    <!-- Meal cards will be inserted here by JavaScript -->
+                </div>
+
+                <!-- Show All Button -->
+                <div id="showAllContainer" class="show-all-container hidden">
+                    <button id="showAllBtn" class="show-all-btn">SHOW ALL</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>MealFinder</h3>
+                <p>Discover delicious meals and cooking inspiration.</p>
+            </div>
+            <div class="footer-section">
+                <p><strong>Data provided by</strong> TheMealDB</p>
+                <p>&copy; 2026 MealFinder. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
