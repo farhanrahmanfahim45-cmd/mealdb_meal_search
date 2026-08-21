@@ -8,9 +8,10 @@
 
 let allMeals = [];
 let showingAll = false;
+let lastSearchTerm = '';
 const MEALS_PER_PAGE = 5;
 
-// DOM Elements
+// DOM Elements — core search (unchanged IDs, preserved behavior)
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const mealsGrid = document.getElementById('mealsGrid');
@@ -21,22 +22,48 @@ const initialState = document.getElementById('initialState');
 const showAllContainer = document.getElementById('showAllContainer');
 const showAllBtn = document.getElementById('showAllBtn');
 
+// DOM Elements — new UI
+const resultsTitle = document.getElementById('resultsTitle');
+const resultsSubtitle = document.getElementById('resultsSubtitle');
+const resultsCount = document.getElementById('resultsCount');
+const noResultsText = document.getElementById('noResultsText');
+const retryBtn = document.getElementById('retryBtn');
+const chipsRow = document.getElementById('chipsRow');
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+
 // ========================================
-// Event Listeners
+// Icon rendering (Lucide)
 // ========================================
 
-// Search button click
-searchBtn.addEventListener('click', handleSearch);
+function renderIcons() {
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+    }
+}
 
-// Search input Enter key
+// ========================================
+// Event Listeners — core search
+// ========================================
+
+searchBtn.addEventListener('click', () => handleSearch());
+
 searchInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         handleSearch();
     }
 });
 
-// Show All button click
 showAllBtn.addEventListener('click', showAllMeals);
+
+if (retryBtn) {
+    retryBtn.addEventListener('click', () => {
+        if (lastSearchTerm) {
+            searchInput.value = lastSearchTerm;
+            handleSearch();
+        }
+    });
+}
 
 // ========================================
 // Main Search Handler
@@ -50,8 +77,12 @@ function handleSearch() {
     if (searchTerm === '') {
         hideAllStates();
         initialState.classList.remove('hidden');
+        resultsSubtitle.textContent = 'Your matches will appear here.';
+        resultsCount.classList.add('hidden');
         return;
     }
+
+    lastSearchTerm = searchTerm;
 
     // Clear previous results and reset state
     clearResults();
@@ -87,6 +118,12 @@ async function searchMeals(searchTerm) {
         if (data.meals === null) {
             hideAllStates();
             noResultsState.classList.remove('hidden');
+            if (noResultsText) {
+                noResultsText.textContent = `We couldn't find a meal matching "${searchTerm}". Try another meal name or ingredient.`;
+            }
+            resultsSubtitle.textContent = `No matches for "${searchTerm}"`;
+            resultsCount.classList.add('hidden');
+            renderIcons();
             return;
         }
 
@@ -95,13 +132,16 @@ async function searchMeals(searchTerm) {
         showingAll = false;
 
         // Display first 5 meals (or all if less than 5)
-        displayMeals(allMeals);
+        displayMeals(allMeals, searchTerm);
 
     } catch (error) {
         // Handle network errors
         console.error('Error fetching meals:', error);
         hideAllStates();
         errorState.classList.remove('hidden');
+        resultsSubtitle.textContent = 'Something went wrong with your search.';
+        resultsCount.classList.add('hidden');
+        renderIcons();
     }
 }
 
@@ -109,7 +149,7 @@ async function searchMeals(searchTerm) {
 // Display Meals
 // ========================================
 
-function displayMeals(meals) {
+function displayMeals(meals, searchTerm) {
     // Clear the grid
     mealsGrid.innerHTML = '';
 
@@ -122,9 +162,16 @@ function displayMeals(meals) {
     // Display meals grid
     mealsGrid.classList.remove('hidden');
 
+    // Update title / subtitle / count
+    if (searchTerm) {
+        resultsSubtitle.textContent = `Showing results for "${searchTerm}"`;
+    }
+    resultsCount.textContent = meals.length === 1 ? '1 meal found' : `${meals.length} meals found`;
+    resultsCount.classList.remove('hidden');
+
     // Create and append meal cards
-    mealsToShow.forEach((meal) => {
-        const card = createMealCard(meal);
+    mealsToShow.forEach((meal, index) => {
+        const card = createMealCard(meal, index);
         mealsGrid.appendChild(card);
     });
 
@@ -134,22 +181,36 @@ function displayMeals(meals) {
     } else {
         showAllContainer.classList.add('hidden');
     }
+
+    renderIcons();
 }
 
 // ========================================
 // Create Meal Card Element
 // ========================================
 
-function createMealCard(meal) {
+function createMealCard(meal, index) {
     // Create card container
     const card = document.createElement('div');
     card.className = 'meal-card';
+    card.style.animationDelay = `${Math.min(index, 8) * 0.05}s`;
 
-    // Create meal image
+    // Media wrapper (image + id badge)
+    const media = document.createElement('div');
+    media.className = 'meal-media';
+
     const image = document.createElement('img');
     image.src = meal.strMealThumb;
     image.alt = meal.strMeal;
     image.className = 'meal-image';
+    image.loading = 'lazy';
+
+    const idBadge = document.createElement('span');
+    idBadge.className = 'meal-id-badge';
+    idBadge.textContent = `ID ${meal.idMeal}`;
+
+    media.appendChild(image);
+    media.appendChild(idBadge);
 
     // Create content container
     const content = document.createElement('div');
@@ -160,20 +221,19 @@ function createMealCard(meal) {
     title.className = 'meal-title';
     title.textContent = meal.strMeal;
 
-    // Create meal ID
-    const mealId = document.createElement('p');
-    mealId.className = 'meal-id';
-    mealId.textContent = `ID: ${meal.idMeal}`;
-
-    // Create instructions preview (limited to 100px height initially)
+    // Create instructions preview
     const instructionsPreview = document.createElement('p');
     instructionsPreview.className = 'meal-instructions-preview';
     instructionsPreview.textContent = meal.strInstructions;
 
-    // Create Read More button
+    // Footer with Read More button
+    const cardFooter = document.createElement('div');
+    cardFooter.className = 'card-footer';
+
     const readMoreBtn = document.createElement('button');
     readMoreBtn.className = 'read-more-btn';
-    readMoreBtn.textContent = 'Read More';
+    readMoreBtn.innerHTML = 'Read more <i data-lucide="chevron-down" aria-hidden="true"></i>';
+    readMoreBtn.setAttribute('aria-expanded', 'false');
 
     // Toggle full instructions on button click
     readMoreBtn.addEventListener('click', () => {
@@ -181,21 +241,27 @@ function createMealCard(meal) {
 
         if (isExpanded) {
             instructionsPreview.classList.remove('expanded');
-            readMoreBtn.textContent = 'Read More';
+            readMoreBtn.innerHTML = 'Read more <i data-lucide="chevron-down" aria-hidden="true"></i>';
+            readMoreBtn.classList.remove('is-expanded');
+            readMoreBtn.setAttribute('aria-expanded', 'false');
         } else {
             instructionsPreview.classList.add('expanded');
-            readMoreBtn.textContent = 'Read Less';
+            readMoreBtn.innerHTML = 'Show less <i data-lucide="chevron-down" aria-hidden="true"></i>';
+            readMoreBtn.classList.add('is-expanded');
+            readMoreBtn.setAttribute('aria-expanded', 'true');
         }
+        renderIcons();
     });
+
+    cardFooter.appendChild(readMoreBtn);
 
     // Append elements to content
     content.appendChild(title);
-    content.appendChild(mealId);
     content.appendChild(instructionsPreview);
-    content.appendChild(readMoreBtn);
+    content.appendChild(cardFooter);
 
-    // Append image and content to card
-    card.appendChild(image);
+    // Append media and content to card
+    card.appendChild(media);
     card.appendChild(content);
 
     return card;
@@ -210,7 +276,7 @@ function showAllMeals() {
     showingAll = true;
 
     // Display all meals without limit
-    displayMeals(allMeals);
+    displayMeals(allMeals, lastSearchTerm);
 
     // Scroll to top of results
     document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
@@ -223,12 +289,15 @@ function showAllMeals() {
 function showLoading() {
     hideAllStates();
     loadingState.classList.remove('hidden');
+    resultsSubtitle.textContent = 'Looking through the kitchen…';
+    resultsCount.classList.add('hidden');
+    renderIcons();
 }
 
 function clearResults() {
     // Reset global state
     allMeals = [];
-    showingAll = false; 
+    showingAll = false;
 
     // Clear grid
     mealsGrid.innerHTML = '';
@@ -246,3 +315,153 @@ function hideAllStates() {
     mealsGrid.classList.add('hidden');
     showAllContainer.classList.add('hidden');
 }
+
+// ========================================
+// Quick Search Chips
+// ========================================
+
+if (chipsRow) {
+    chipsRow.addEventListener('click', (event) => {
+        const chip = event.target.closest('.chip');
+        if (!chip) return;
+
+        const term = chip.dataset.term;
+        searchInput.value = term;
+        handleSearch();
+        document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    });
+}
+
+// ========================================
+// Mobile Navigation
+// ========================================
+
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        menuToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    });
+
+    navLinks.addEventListener('click', (event) => {
+        if (event.target.closest('a')) {
+            navLinks.classList.remove('open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.setAttribute('aria-label', 'Open menu');
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && navLinks.classList.contains('open')) {
+            navLinks.classList.remove('open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.setAttribute('aria-label', 'Open menu');
+            menuToggle.focus();
+        }
+    });
+}
+
+// ========================================
+// Active Nav Link on Scroll
+// ========================================
+
+const navSections = ['home', 'search', 'about']
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+
+if (navSections.length && 'IntersectionObserver' in window) {
+    const navObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.nav-link').forEach((link) => {
+                        link.classList.toggle('active', link.dataset.nav === entry.target.id);
+                    });
+                }
+            });
+        },
+        { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+    );
+
+    navSections.forEach((section) => navObserver.observe(section));
+}
+
+// ========================================
+// Reveal-on-scroll animations
+// ========================================
+
+const revealEls = document.querySelectorAll('.reveal');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (revealEls.length && 'IntersectionObserver' in window && !prefersReducedMotion) {
+    const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    observer.unobserve(entry.target);
+                }
+            });
+        },
+        { threshold: 0.15 }
+    );
+
+    revealEls.forEach((el) => revealObserver.observe(el));
+} else {
+    revealEls.forEach((el) => el.classList.add('in-view'));
+}
+
+// ========================================
+// Hero photo collage (decorative)
+// ========================================
+
+async function loadHeroCollage() {
+    const collage = document.getElementById('heroCollage');
+    if (!collage) return;
+
+    const cards = collage.querySelectorAll('.collage-card');
+    if (!cards.length) return;
+
+    // Pull a handful of distinct random meals to populate the collage.
+    // Each request is independent so one failure doesn't block the others.
+    const requests = Array.from(cards).map(() =>
+        fetch('https://www.themealdb.com/api/json/v1/1/random.php')
+            .then((res) => (res.ok ? res.json() : null))
+            .catch(() => null)
+    );
+
+    const results = await Promise.all(requests);
+
+    results.forEach((data, index) => {
+        const meal = data && data.meals && data.meals[0];
+        const card = cards[index];
+        if (!card) return;
+
+        const img = card.querySelector('img');
+        const skeleton = card.querySelector('.collage-skeleton');
+        const caption = card.querySelector('figcaption');
+
+        if (!meal) {
+            // Fail quietly — leave the skeleton in place rather than an empty box.
+            return;
+        }
+
+        img.src = meal.strMealThumb;
+        img.alt = meal.strMeal;
+        img.addEventListener('load', () => {
+            img.classList.add('is-loaded');
+            if (skeleton) skeleton.classList.add('hidden');
+        }, { once: true });
+
+        if (caption) caption.textContent = meal.strMeal;
+    });
+}
+
+// ========================================
+// Init
+// ========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderIcons();
+    loadHeroCollage();
+});
